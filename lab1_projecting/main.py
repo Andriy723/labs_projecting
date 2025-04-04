@@ -1,4 +1,4 @@
-gfrom fastapi import FastAPI
+from fastapi import FastAPI
 from config import engine, Base
 from api import (
     user_router,
