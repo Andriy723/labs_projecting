@@ -16,10 +16,12 @@ class UserRepository(IUserRepository):
         return self.db.query(User).filter(User.email == email).first()
 
     def create_user(self, user_data: dict) -> User:
+        print("Creating user with data:", user_data)  # Додано логування
         user = User(**user_data)
         self.db.add(user)
         self.db.commit()
         self.db.refresh(user)
+        print("User created with ID:", user.userID)  # Додано логування
         return user
 
     def update_user(self, user: User) -> None:

@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
+
 from config import engine, Base
 from api import (
     user_router,
@@ -13,39 +15,47 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3001"],  # Для розробки
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(
     user_router.create_user_router(),
-    prefix="/users",
+    prefix="/api/users",
     tags=["Users"]
 )
 
 app.include_router(
     account_router.create_account_router(),
-    prefix="/accounts",
+    prefix="/api/accounts",
     tags=["Accounts"]
 )
 
 app.include_router(
     transaction_router.create_transaction_router(),
-    prefix="/transactions",
+    prefix="/api/transactions",
     tags=["Transactions"]
 )
 
 app.include_router(
     payment_method_router.create_payment_method_router(),
-    prefix="/payment-methods",
+    prefix="/api/payment-methods",
     tags=["Payment Methods"]
 )
 
 app.include_router(
     card_router.create_card_router(),
-    prefix="/cards",
+    prefix="/api/cards",
     tags=["Cards"]
 )
 
 app.include_router(
     country_router.create_country_router(),
-    prefix="/countries",
+    prefix="/api/countries",
     tags=["Countries"]
 )
 
