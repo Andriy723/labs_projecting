@@ -23,3 +23,11 @@ class IAccountRepository(ABC):
     @abstractmethod
     def update_balance(self, account_id: int, amount: float) -> None:
         pass
+
+    @abstractmethod
+    def create_account(self, user_id: int, currency: str) -> Account:
+        pass
+
+    @abstractmethod
+    def get_user_accounts(self, user_id: int) -> List[Account]:
+        pass

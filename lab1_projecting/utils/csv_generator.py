@@ -6,7 +6,7 @@ import os
 fake = Faker()
 
 
-def generate_test_data(file_path="data/full_data.csv", num_records=1000):
+def generate_test_data(file_path="data/full_data.csv", num_records=100):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
     def generate_ukrainian_phone():
