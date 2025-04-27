@@ -13,6 +13,9 @@ class TransactionService:
     def get_account_transactions(self, account_id: int) -> List[Transaction]:
         return self._transaction_repo.get_by_account(account_id)
 
+    def get_all_account_transactions(self, account_id: int) -> List[Transaction]:
+        return self._transaction_repo.get_all_by_account(account_id)
+
     def get_user_transactions(self, user_id: int) -> List[Transaction]:
         return self._transaction_repo.get_by_user(user_id)
 

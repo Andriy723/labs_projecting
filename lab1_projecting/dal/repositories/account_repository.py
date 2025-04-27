@@ -1,32 +1,33 @@
 from sqlalchemy.orm import Session
-from dal.interfaces.iaccount_repository import IAccountRepository
 from models.account import Account
-from config import SessionLocal
-from typing import Optional, List
+from typing import List
+import time
 
+class AccountRepository:
+    def __init__(self, db: Session):
+        self.db = db
 
-class AccountRepository(IAccountRepository):
-    def __init__(self, db: Session = None):
-        self.db = db or SessionLocal()
-
-    def get_by_id(self, account_id: int) -> Optional[Account]:
-        return self.db.query(Account).filter(Account.accountID == account_id).first()
-
-    def get_by_number(self, account_number: str) -> Optional[Account]:
-        return self.db.query(Account).filter(Account.accountNumber == account_number).first()
-
-    def get_by_user_id(self, user_id: int) -> List[Account]:
-        return self.db.query(Account).filter(Account.userID == user_id).all()
-
-    def create(self, account_data: dict) -> Account:
-        account = Account(**account_data)
+    def create_account(self, user_id: int, currency: str) -> Account:
+        account_number = f"UA{user_id:08d}{int(time.time()) % 10000:04d}"
+        account = Account(
+            accountNumber=account_number,
+            balance=0.0,
+            currency=currency,
+            userID=user_id
+        )
         self.db.add(account)
         self.db.commit()
         self.db.refresh(account)
         return account
 
+    def get_user_accounts(self, user_id: int) -> List[Account]:
+        return self.db.query(Account).filter(Account.userID == user_id).all()
+
+    def get_account_by_id(self, account_id: int) -> Account:
+        return self.db.query(Account).filter(Account.accountID == account_id).first()
+
     def update_balance(self, account_id: int, amount: float) -> None:
-        account = self.get_by_id(account_id)
+        account = self.get_account_by_id(account_id)
         if account:
             account.balance += amount
             self.db.commit()

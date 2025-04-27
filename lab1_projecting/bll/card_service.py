@@ -8,13 +8,10 @@ class CardService:
         self._card_repo = card_repo
 
     def add_card(self, card_data: dict) -> Card:
-        if not self._card_repo.validate(
-                card_data['cardNumber'],
-                card_data['expiryDate'],
-                card_data['cvv']
-        ):
-            raise ValueError("Invalid card details")
-        return self._card_repo.create(card_data)
+        return self._card_repo.create_card(card_data)
+
+    def validate_card_details(self, card_number: str, expiry_date: str, cvv: str) -> bool:
+        return self._card_repo._validate_card(card_number, expiry_date, cvv)
 
     def get_account_cards(self, account_id: int) -> List[Card]:
         return self._card_repo.get_by_account(account_id)
@@ -24,3 +21,9 @@ class CardService:
 
     def validate_card(self, card_number: str, expiry_date: str, cvv: str) -> bool:
         return self._card_repo.validate(card_number, expiry_date, cvv)
+
+    def get_cards_by_user(self, user_id: int) -> List[Card]:
+        return self._card_repo.get_by_user(user_id)
+
+    def get_user_cards(self, user_id: int) -> List[Card]:
+        return self._card_repo.get_user_cards(user_id)

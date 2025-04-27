@@ -23,6 +23,11 @@ class TransactionRepository(ITransactionRepository):
     def get_by_account(self, account_id: int) -> List[Transaction]:
         return self.db.query(Transaction).filter(Transaction.accountID == account_id).all()
 
+    def get_all_by_account(self, account_id: int) -> List[Transaction]:
+        return self.db.query(Transaction).filter(
+            Transaction.accountID == account_id
+        ).order_by(Transaction.date.desc()).all()
+
     def get_by_user(self, user_id: int) -> List[Transaction]:
         return self.db.query(Transaction).join(Account).filter(Account.userID == user_id).all()
 

@@ -23,3 +23,7 @@ class ICardRepository(ABC):
     @abstractmethod
     def validate(self, card_number: str, expiry_date: str, cvv: str) -> bool:
         pass
+
+    @abstractmethod
+    def get_by_user(self, user_id: int) -> List[Card]:
+        pass

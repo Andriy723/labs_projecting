@@ -9,7 +9,7 @@ class Account(Base):
     accountNumber = Column(String(34), unique=True, nullable=False)
     balance = Column(Double, default=0.0)
     currency = Column(String(10), nullable=False)
-    userID = Column(Integer, ForeignKey("users.userID"))
+    userID = Column(Integer, ForeignKey("users.userID"), nullable=False)
 
     user = relationship("User", back_populates="accounts")
     cards = relationship("Card", back_populates="account")

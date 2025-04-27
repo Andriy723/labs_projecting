@@ -19,3 +19,7 @@ class ITransactionRepository(ABC):
     @abstractmethod
     def get_by_user(self, user_id: int) -> List[Transaction]:
         pass
+
+    @abstractmethod
+    def get_all_by_account(self, account_id: int) -> List[Transaction]:
+        pass
